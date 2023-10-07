@@ -1,9 +1,11 @@
-export const FeedbackOptions = () => {
+export const FeedbackOptions = ({options}) => {
    return (
-      <div>  
-         <button>Good</button>
-         <button>Neutral</button>
-         <button>Bad</button>
-      </div>
+      <ul>
+         {Object.keys(options).map(name => (
+            <li key={name}>
+               <button>{name}</button>
+            </li>
+         ))}
+      </ul>
    )
 };
