@@ -14,6 +14,17 @@ export class App extends Component {
     positivePercentage: 0,
   };
 
+  updateFeedbackQty = (key,value) => {
+    this.setState(prevState => ({
+      feedbackOptions: {
+        ...prevState.feedbackOptions,
+        [key]: prevState[key].value + 1,
+      }
+    })
+      
+    )
+  };
+
   render() {
 
     const { good, neutral, bad } = this.state.feedbackOptions;
@@ -22,7 +33,7 @@ export class App extends Component {
     return (
       <div>
       <SectionWrapper title={"Please leave feedback"}>
-      <FeedbackOptions options={this.state.feedbackOptions} />
+          <FeedbackOptions options={this.state.feedbackOptions} onLeaveFeedback={this.updateFeedbackQty} />
       </SectionWrapper>
 
       <SectionWrapper title={"Statistics"}>

@@ -1,11 +1,18 @@
-export const FeedbackOptions = ({options}) => {
-   return (
-      <ul>
-         {Object.keys(options).map(name => (
-            <li key={name}>
-               <button>{name}</button>
-            </li>
-         ))}
-      </ul>
-   )
+export const FeedbackOptions = ({ options,onLeaveFeedback }) => {
+  return (
+    <ul>
+      {Object.keys(options).map(name => (
+        <li key={name}>
+          <button
+            onClick={() => {
+                  onLeaveFeedback(name,options.name);
+                  
+            }}
+          >
+            {name}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
 };
