@@ -14,11 +14,11 @@ export class App extends Component {
     positivePercentage: 0,
   };
 
-  updateFeedbackQty = (key,value) => {
+  updateFeedbackQty = (key) => {
     this.setState(prevState => ({
       feedbackOptions: {
         ...prevState.feedbackOptions,
-        [key]: prevState[key].value + 1,
+        [key]: prevState.feedbackOptions[key] + 1,
       }
     })
       
