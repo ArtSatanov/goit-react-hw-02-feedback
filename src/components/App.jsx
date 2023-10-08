@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import {FeedbackOptions} from "./FeedbackOptions/FeedbackOptions"
+import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { SectionWrapper } from './SectionWrapper/SectionWrapper';
 import { Statistics } from './Statistics/Statistics';
 
@@ -8,41 +8,55 @@ export class App extends Component {
     feedbackOptions: {
       good: 0,
       neutral: 0,
-      bad: 0
+      bad: 0,
     },
     total: 0,
     positivePercentage: 0,
   };
 
-  updateFeedbackQty = (key) => {
+  updaterFeedbackStats = key => {
     this.setState(prevState => ({
       feedbackOptions: {
         ...prevState.feedbackOptions,
         [key]: prevState.feedbackOptions[key] + 1,
-      }
-    })
-      
-    )
+      },
+      total: prevState.total + 1,
+      positivePercentage: Math.round(
+        key === 'good'
+          ? ((prevState.feedbackOptions.good + 1) * 100) / (prevState.total + 1)
+          : (prevState.feedbackOptions.good * 100) / (prevState.total + 1)
+      ),
+    }));
+  };
+
+  updatedPositivePercentage = () => {
+    return (this.state.positivePercentage = this.state.feedbackOptions.good);
   };
 
   render() {
-
     const { good, neutral, bad } = this.state.feedbackOptions;
-    const { total, positivePercentage} = this.state;
-    
+    const { total, positivePercentage } = this.state;
+
     return (
       <div>
-      <SectionWrapper title={"Please leave feedback"}>
-          <FeedbackOptions options={this.state.feedbackOptions} onLeaveFeedback={this.updateFeedbackQty} />
-      </SectionWrapper>
+        <SectionWrapper title={'Please leave feedback'}>
+          <FeedbackOptions
+            options={this.state.feedbackOptions}
+            onLeaveFeedback={this.updaterFeedbackStats}
+          />
+        </SectionWrapper>
 
-      <SectionWrapper title={"Statistics"}>
-          <Statistics good={good} neutral={neutral} bad={bad} total={total} positivePercentage={positivePercentage} />
-      </SectionWrapper>
+        <SectionWrapper title={'Statistics'}>
+          {this.state.total === 0 ? }
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={total}
+            positivePercentage={positivePercentage}
+          />
+        </SectionWrapper>
       </div>
-
-
-    
     );
   }
 }
