@@ -29,10 +29,6 @@ export class App extends Component {
     }));
   };
 
-  updatedPositivePercentage = () => {
-    return (this.state.positivePercentage = this.state.feedbackOptions.good);
-  };
-
   render() {
     const { good, neutral, bad } = this.state.feedbackOptions;
     const { total, positivePercentage } = this.state;
@@ -47,7 +43,7 @@ export class App extends Component {
         </SectionWrapper>
 
         <SectionWrapper title={'Statistics'}>
-          {this.state.total === 0 ? }
+          {this.state.total === 0}
           <Statistics
             good={good}
             neutral={neutral}
