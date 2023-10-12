@@ -6,53 +6,49 @@ import { Notification } from './Notification/Notification';
 
 export class App extends Component {
   state = {
-    feedbackOptions: {
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    },
-    total: 0,
-    positivePercentage: 0,
+    good: 0,
+    neutral: 0,
+    bad: 0,
   };
 
   updaterFeedbackStats = key => {
-    this.setState(prevState => ({
-      feedbackOptions: {
-        ...prevState.feedbackOptions,
-        [key]: prevState.feedbackOptions[key] + 1,
-      },
-      total: prevState.total + 1,
-      positivePercentage: Math.round(
-        key === 'good'
-          ? ((prevState.feedbackOptions.good + 1) * 100) / (prevState.total + 1)
-          : (prevState.feedbackOptions.good * 100) / (prevState.total + 1)
-      ),
-    }));
+    this.setState(prevState => ({ [key]: prevState[key] + 1 }));
+  };
+
+  countTotalFeedback = () => {
+    return Object.values(this.state).reduce((prevValue, number) => {
+      return prevValue + number;
+    }, 0);
+  };
+
+  positivePercentage = () => {
+    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
   };
 
   render() {
-    const { good, neutral, bad } = this.state.feedbackOptions;
-    const { total, positivePercentage } = this.state;
+    const { good, neutral, bad } = this.state;
 
     return (
       <div>
         <SectionWrapper title={'Please leave feedback'}>
           <FeedbackOptions
-            options={this.state.feedbackOptions}
+            options={this.state}
             onLeaveFeedback={this.updaterFeedbackStats}
           />
         </SectionWrapper>
 
         <SectionWrapper title={'Statistics'}>
-          {this.state.total === 0 ?
-          <Notification messageme={'There is no feedback'} /> :
-          <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            total={total}
-            positivePercentage={positivePercentage}
-          />}
+          {this.countTotalFeedback() === 0 ? (
+            <Notification messageme={'There is no feedback'} />
+          ) : (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={this.countTotalFeedback()}
+              positivePercentage={this.positivePercentage()}
+            />
+          )}
         </SectionWrapper>
       </div>
     );
